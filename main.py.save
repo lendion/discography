@@ -1,0 +1,43 @@
+'''crawser used to get discography info of the internet'''
+
+import requests
+import os
+import click
+
+SONGS = []
+
+@click.command()
+@click.argument("path")
+def main(path):
+	try:
+		fo = open(os.path.abspath(os.path.dirname(__file__))+"/token.txt", "r")
+		TOKEN = fo.read() #discogs api token
+		fo.close
+	except:
+		print "no token found plese get one and put in token.txt"
+		return
+	d = discogs_client.Client('ExampleApplication/0.1', user_token=TOKEN) #initializing discogs api
+	if not os.path.exists(path):
+		print "invalid path"
+		return
+	dirs = os.walk(path, followlinks=False)
+	for dir in dirs:
+		for file in dir[2]:
+			if file.endswith(".mp3"):
+				SONGS.append(file)
+	for song in SONGS:
+		pass #search each song
+	print len(SONGS)
+
+def disearch(query):
+	try:
+                fo = open(os.path.abspath(os.path.dirname(__file__))+"/token.tx$
+                TOKEN = fo.read() #discogs api token
+                fo.close
+        except:
+                print "no token found plese get one and put in token.txt"
+                return
+	d = discogs_client.Client('ExampleApplication/0.1', user_token=TOKEN)
+
+if __name__ == "__main__":
+	main()
