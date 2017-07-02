@@ -5,9 +5,9 @@ import os
 import click
 import discogs_client
 
-'''crawser used to get discography info of the internet'''
+'''crawler used to get discography info of the internet'''
 
-sorten = {}
+sorted_songs = {}
 
 
 @click.command()
@@ -24,19 +24,19 @@ def main(path):
 			if song.endswith(".mp3"):
 				song_name = symplafy(song)
 				artist = disearch(song_name)
-				if artist not in sorten.keys():
-					sorten[artist] = []
-				sorten[artist].append(os.path.join(DIR[0], song))
+				if artist not in sorted_songs.keys():
+					sorted_songs[artist] = []
+				sorted_songs[artist].append(os.path.join(DIR[0], song))
 				print song_name + " : " + artist
 				print i
 				i += 1
 	print "done with this 1"
-	for folder in sorten:
+	for folder in sorted_songs:
 		print folder
 		if not os.path.exists(os.path.join(path, folder)):
 			os.makedirs(os.path.join(path, folder))
 		print "folder created!"
-		for song_with_path in sorten[folder]:
+		for song_with_path in sorted_songs[folder]:
 			os.rename(song_with_path, os.path.join(path, folder, song_with_path.split("/")[-1]))
 	print "done!"
 
@@ -63,5 +63,5 @@ def symplafy(name):  # remove any text within [] or () in song name
 	return name
 
 if __name__ == "__main__":
-	if raw_input("are the song names are correct and symple [y/n]: ").lower() == "y":
+	if raw_input("are the song names are correct and simple [y/n]: ").lower() == "y":
 		main()
