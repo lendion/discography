@@ -1,19 +1,19 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-'''crawser used to get discography info of the internet'''
-
-import requests
 import os
-import re
 import click
 import discogs_client
+
+'''crawser used to get discography info of the internet'''
+
 sorten = {}
+
 
 @click.command()
 @click.argument("path")
 def main(path):
-	i=0
+	i = 0
 	if not os.path.exists(path):
 		print "invalid path"
 		return
@@ -24,7 +24,7 @@ def main(path):
 			if song.endswith(".mp3"):
 				song_name = symplafy(song)
 				artist = disearch(song_name)
-				if not artist in sorten.keys():
+				if artist not in sorten.keys():
 					sorten[artist] = []
 				sorten[artist].append(os.path.join(dir[0], song))
 				print song_name + " : " + artist
@@ -39,6 +39,8 @@ def main(path):
 		for song_with_path in sorten[folder]:
 			os.rename(song_with_path, os.path.join(path, folder, song_with_path.split("/")[-1]))
 	print "done!"
+
+
 def disearch(query):
 	d = discogs_client.Client('ExampleApplication/0.1', user_token="uieEzItIYiInEuCChonMjAmdkKeNYYjXOGksorpF")
 	results = d.search(query, type='release')
@@ -50,12 +52,8 @@ def disearch(query):
 	except:
 		return "not found"
 
+
 def symplafy(name): #remove any text within [] or () in song name
-#	if "(" in name and ")" in name:
-#		re.sub('\([^>]+\)', '', name)
-#	if "[" in name and "]" in name:
-#		re.sub('\[[^>]+\]', '', name)
-#	not any better ##########################################
 	try:
 		name = name.split("-")[1]
 	except:
