@@ -18,18 +18,18 @@ def main(path):
 		print "invalid path"
 		return
 	dirs = os.walk(path, followlinks=False)
-	for dir in dirs:
-		for song in dir[2]:
+	for DIR in dirs:
+		for song in DIR[2]:
 			print song
 			if song.endswith(".mp3"):
 				song_name = symplafy(song)
 				artist = disearch(song_name)
 				if artist not in sorten.keys():
 					sorten[artist] = []
-				sorten[artist].append(os.path.join(dir[0], song))
+				sorten[artist].append(os.path.join(DIR[0], song))
 				print song_name + " : " + artist
 				print i
-				i=i+1
+				i += 1
 	print "done with this 1"
 	for folder in sorten:
 		print folder
@@ -44,20 +44,17 @@ def main(path):
 def disearch(query):
 	d = discogs_client.Client('ExampleApplication/0.1', user_token="uieEzItIYiInEuCChonMjAmdkKeNYYjXOGksorpF")
 	results = d.search(query, type='release')
-	results.pages
 	try:
 		artist = results[0].artists[0]
 		return artist.name
 
-	except:
+	except IndexError:
 		return "not found"
 
 
-def symplafy(name): #remove any text within [] or () in song name
-	try:
+def symplafy(name):  # remove any text within [] or () in song name
+	if "-" in name:
 		name = name.split("-")[1]
-	except:
-		pass
 	name = name.replace(".mp3", "")
 	if name.startswith(" "):
 		name = name[1:]
